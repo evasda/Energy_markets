@@ -105,11 +105,12 @@ for i in range(1995, 2005):
 
 print(CDD)
 def average():
+	print(len(CDD))
 	a = sum(CDD)/len(CDD)
 	return a
 
 kappa = average()
-print(kappa)
+print('Estimated kappa: %f' % kappa)
 
 """
 Need to compute the expected value of CDD index for august, with t=july 1. Can assume that we are at seasonal mean 1.july.
@@ -178,7 +179,7 @@ for j in range(0, sim):
 print(counter)
 
 expected_cdd = sum(counter)/sim
-print(expected_cdd)
+print('Expected value CDD less than kappa: %f' % expected_cdd)
 
 #print(pred_season())
 x_ = np.asarray(func1())
@@ -240,8 +241,5 @@ for i in range(0, sim):
 	for j in range(0, 30):
 		ss = np.linspace(0, 61-j, 61-j)
 		np.random.standard_normal(sim)
-		F[j,] = F[0] * np.exp(mu + sigma^2/2 * tt + sigma * bm
-		xxx = X_car(s[i], i)
-
-
-
+		F[j,] = F[0] * np.exp(mu + sigma^2/2 * tt + sigma * bm)
+		#xxx = X_car(s[i], i)
