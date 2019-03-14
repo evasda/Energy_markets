@@ -9,6 +9,7 @@ from scipy.optimize import curve_fit
 import math as math
 from datetime import datetime
 from scipy.linalg import expm
+from scipy.linalg import cholesky
 
 class Temperature:
 	def __init__(self, n, dt):
@@ -81,8 +82,8 @@ class Temperature:
 		temp_arr = np.zeros(N)
 		err_arr = np.zeros(N)
 		total = np.zeros(N)
-		norm = np.random.standard_normal(N)
-		err_arr[0:N] = sigma2 * norm
+		self.norm = np.random.standard_normal(N)
+		err_arr[0:N] = sigma2 * self.norm
 		temp_arr[1] = sigma2 * err_arr[1]
 		temp_arr[2] = (3 - alpha1)*temp_arr[1] + sigma2 * err_arr[1]
 		for i in range(3, N):
@@ -116,17 +117,17 @@ class Temperature:
 		expected_cdd = sum(counter)/sim
 		print('Expected CDD: %s' % expected_cdd)
 
-	def estimate_futures(t, tau1, tau2, sim):
+	def estimate_futures(self, sim, dataframe, t = 0, tau1 = 182, tau2 = 244):
 		startvalue = 31600
+		corr_matrix = np.array([[0.9, 0], [0, 0.9]])
 		for i in range(0, sim):
+			XX = self.temp_estimate_AR3(d_start = tau1, d_end = tau2, season_df = dataframe)
 			F = np.zeros((N, sim))
-			F[0, sim] = 0
-			XX[0] 
-			for j in range(0, 30):
+			for j in range(1, 30):
 				ss = np.linspace(0, 61-j, 61-j)
-				np.random.standard_normal(sim)
-				F[j,] = F[0] * np.exp(mu + sigma^2/2 * tt + sigma * bm)
-				XX[j,] = X_car(s[i], i)
+				bm = self.norm 
+				bm = bm * corr_matrix
+				F[j,:] = F[0,:] * np.exp(mu + sigma^2/2 * tt + sigma * bm)
 
 
 
@@ -180,11 +181,12 @@ if __name__ == '__main__':
 
 
 	S = df.Season[182:244] 		# Seasonal values for the months of july and august.
-
 	N = 62						# Number of days to simulate
 	s = np.linspace(0, N, N, dtype=int)
 
 	tempt.MCMC_temperature(sim = 500, season_df = df.Season)
+
+	tempt.estimate_futures(sim= 10, dataframe = df.Season)
 
 	#print(pred_season())
 	x_ = np.asarray(func1())
